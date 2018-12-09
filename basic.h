@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include <math.h>
 
 using namespace std;
 
@@ -91,7 +90,7 @@ public:
 	}
 
 	// compute the control point of the cubic-bezier line
-	void computeBeizerCtrlPoint(vector<Point>& _points)
+	void computeBeizerCtrlPoint(Point* _points)
 	{
 		// Four points would decide the shape of cubic-bezier line
 		Point bPoint[4];
@@ -150,15 +149,14 @@ public:
 				endTriangle.setTriangle(bPoint[3], 0, -TriangleSize, TriangleSize, -TriangleSize, 0, 0);
 			}
 		}
-		_points.clear();
 		for (int i = 0; i < 4; i++)
 		{
-			_points.push_back(bPoint[i]);
+			_points[i] = bPoint[i];
 		}
 	}
 
 	// generalize all cubic-bezier point through control point
-	void bezierGeneralized(vector<Point> ctrlPoints)
+	void bezierGeneralized(Point* ctrlPoints)
 	{
 		Point p1 = ctrlPoints[0];
 		Point p2;
@@ -178,7 +176,7 @@ public:
 	}
 
 private:
-	Point _computeBezierPoints(vector<Point> PT, double t)
+	Point _computeBezierPoints(Point* PT, double t)
 	{
 		Point P;
 		P.x = 0; P.y = 0;

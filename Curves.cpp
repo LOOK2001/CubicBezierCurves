@@ -111,35 +111,29 @@ void mouseMotion(int mX, int mY)
 	float aX = mX;
 	float aY = (SCREEN_HEIGHT - mY);
 
-	for (int i = 0; i < m_vAllLine.size(); i++)
+	for (int i = 0; i < (int)m_vAllLine.size(); i++)
 	{
-		bool isMouseIn;
+		bool startIn = m_vAllLine[i].startPoint.getMouseIn(float(aX), float(aY));
+		bool endIn = m_vAllLine[i].endPoint.getMouseIn(float(aX), float(aY));
 
-		if (m_vAllLine[i].startPoint.getMouseIn(float(aX), float(aY)))
+		if (startIn || endIn)
 		{
-			m_vAllLine[i].startPoint.x = aX;
-			m_vAllLine[i].startPoint.y = aY;
 
-			vector<Point> tempCtrlPoints;
-			tempCtrlPoints.push_back(m_vAllLine[i].startPoint);
-			tempCtrlPoints.push_back(m_vAllLine[i].endPoint);
+			if (startIn) {
+				m_vAllLine[i].startPoint.x = aX;
+				m_vAllLine[i].startPoint.y = aY;
+			}
+			else {
+				m_vAllLine[i].endPoint.x = aX;
+				m_vAllLine[i].endPoint.y = aY;
+			}
 
-			m_vAllLine[i].computeBeizerCtrlPoint(tempCtrlPoints);
-			m_vAllLine[i].bezierGeneralized(tempCtrlPoints);
-		}
-		else if (m_vAllLine[i].endPoint.getMouseIn(float(aX), float(aY)))
-		{
-			isMouseIn = true;
+			Point CtrlPoints[4];
+			CtrlPoints[0] = m_vAllLine[i].startPoint;
+			CtrlPoints[1] = m_vAllLine[i].endPoint;
 
-			m_vAllLine[i].endPoint.x = aX;
-			m_vAllLine[i].endPoint.y = aY;
-
-			vector<Point> tempCtrlPoints;
-			tempCtrlPoints.push_back(m_vAllLine[i].startPoint);
-			tempCtrlPoints.push_back(m_vAllLine[i].endPoint);
-
-			m_vAllLine[i].computeBeizerCtrlPoint(tempCtrlPoints);
-			m_vAllLine[i].bezierGeneralized(tempCtrlPoints);
+			m_vAllLine[i].computeBeizerCtrlPoint(CtrlPoints);
+			m_vAllLine[i].bezierGeneralized(CtrlPoints);
 		}
 	}
 }
@@ -151,7 +145,7 @@ void mouseButton(int button, int state, int x, int y) {
 	{
 		bool isMouseIn = false;
 
-		// whether mouse in the existed point
+		// whether mouse in the existed control point
 		for (int i = 0; i < (int)m_vAllLine.size(); i++)
 		{
 			bool firstIn = m_vAllLine[i].startPoint.getMouseIn(float(x), float(SCREEN_HEIGHT - y));
@@ -183,10 +177,10 @@ void mouseButton(int button, int state, int x, int y) {
 			// If (click-amout) points are drawn do the curve.
 			if ((clickNum) % 2 == 0 && clickNum != 0)
 			{
-				vector<Point> ctrlPoints;
+				Point ctrlPoints[4];
 				Line tempLine;
-				ctrlPoints.push_back(startPoint);
-				ctrlPoints.push_back(endPoint);
+				ctrlPoints[0] = startPoint;
+				ctrlPoints[1] = endPoint;
 				tempLine.computeBeizerCtrlPoint(ctrlPoints);
 
 				Point p1 = ctrlPoints[0];
