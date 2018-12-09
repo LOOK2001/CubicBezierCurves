@@ -4,6 +4,8 @@ An implementation of Cubic Bezier Curves in C++ using OpenGL, glut.
 
 Curves could be dragged and change direction
 
+Curves_01.exe has been added to [/bin](https://github.com/LOOK2001/Light2D/tree/master/bin) (only for 64 bit on Windows)
+
 ## Example
 
 ![](example.gif) ![](example1.gif)
@@ -12,7 +14,7 @@ Curves could be dragged and change direction
 
 ## Built With
 
-* [glut](https://www.opengl.org/resources/libraries/glut/) - Used to draw graphics on the window.
+* [freeglut](http://freeglut.sourceforge.net/) - Used to draw graphics on the window.
 
 ## Authors
 
